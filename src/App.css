@@ -14,3 +14,9 @@
   border-bottom: 1px solid lightgray;
   height: 5vh;
 }
+
+
+.app__signup{
+  display: flex;
+  flex-direction: column;
+}
