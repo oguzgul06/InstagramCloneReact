@@ -8,7 +8,7 @@ function Post({ username, caption, imageUrl }) {
       <div className="post__header">
         <Avatar
           className="post__avatar"
-          alt="ConoAkif"
+          alt="Anderson"
           src="/static/images/avatar/1.jpg"
         />
 
