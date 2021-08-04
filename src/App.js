@@ -38,6 +38,24 @@ function App() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        // user has logged in...
+        setUser(authUser);
+      } else {
+        // user has logged out...
+        setUser(null);
+      }
+    });
+
+    return () => {
+      // performs cleanup function
+      unsubscribe();
+    };
+  }, [user, username]);
 
   useEffect(() => {
     db.collection("posts").onSnapshot((snapshot) => {
@@ -49,6 +67,11 @@ function App() {
     event.preventDefault();
     auth
       .createUserWithEmailAndPassword(email, password)
+      .then((authUser) => {
+        return authUser.user.updateProfile({
+          displayName: username,
+        });
+      })
       .catch((error) => alert(error.message));
   };
 
@@ -58,11 +81,7 @@ function App() {
         <div style={modalStyle} className={classes.paper}>
           <form className="app__signup">
             <center>
-              <img
-                className="app__headerImage"
-                src="./image/logo.png"
-                alt=""
-              />
+              <img className="app__headerImage" src="./image/logo.png" alt="" />
             </center>
             <Input
               placeholder="username"
